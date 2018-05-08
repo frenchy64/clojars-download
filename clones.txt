@@ -1,49 +1,3 @@
-#!/bin/bash
-
-SUCCESSFUL_CLONES="successful_clones.txt"
-FAILED_CLONES="failed_clones.txt"
-
-# $1 = clone url
-# $2 = clone folder
-# $3 = tag
-function git_clone() {
-  if [ ! -d $2 ]
-  then
-    GIT_TERMINAL_PROMPT=0 git clone $1 $2
-    if [ ! $? -eq 0 ]
-    then
-      echo "Failed to clone " $1 " with exit code $?"
-      echo $2 >> $FAILED_CLONES
-      return $?
-    fi
-  else
-    echo "Skipping, already cloned: " $1
-  fi
-
-  cd $2
-  if [ ! $? -eq 0 ]
-  then
-    echo "Failed to cd into " $2
-    echo $2 >> $FAILED_CLONES
-    return $?
-  fi
-
-  git checkout $3
-  if [ ! $? -eq 0 ]
-  then
-    echo "Failed to checkout " $1 " at commit " $3
-    echo $2 >> $FAILED_CLONES
-    cd ..
-    return $?
-  fi
-  cd ..
-
-  echo $2 >> $SUCCESSFUL_CLONES
-}
-
-rm $SUCCESSFUL_CLONES
-rm $FAILED_CLONES
-
 git_clone https://github.com/muhuk/clecs muhuk__clecs cd1d2c4f3114fa99f49e83b33aca20f92f1b9268
 git_clone https://github.com/quoll/naga quoll__naga 38139cd49937b8a77012bc70d755b90a8a815ef5
 git_clone https://github.com/trystan/theseus trystan__theseus bd978dd2a2b53609b37e294f56a51cec4e244e2a
@@ -1589,7 +1543,7 @@ git_clone https://github.com/irresponsible/oolong irresponsible__oolong 4ae1575e
 git_clone https://github.com/thunknyc/richelieu thunknyc__richelieu 2a51f2e7604de897256434822ce5d69a0a9a02f9
 git_clone https://github.com/sebastiansen/rip sebastiansen__rip dc471c95b815d979db4da9b06e4e7a09b123d279
 git_clone https://github.com/tolitius/monr tolitius__monr 1bb924184ab21c6536a2a75d79f5693044bd761f
-#git_clone https://github.com/prismofeverything/elephantlaboratories prismofeverything__elephantlaboratories c4c529f915fdfa379b94af5d413fec43bc458866
+git_clone https://github.com/prismofeverything/elephantlaboratories prismofeverything__elephantlaboratories c4c529f915fdfa379b94af5d413fec43bc458866
 git_clone https://github.com/nanit/paraman nanit__paraman 7743f436da3dee0923b1da101d482b32cd91a2aa
 git_clone https://github.com/bradlucas/mailblaster bradlucas__mailblaster ffc84f4630f4d6e296bcccee78ee7af00b602230
 git_clone https://github.com/tangrammer/component tangrammer__component 4e14a3404a52a4c9fb420586543e77048c3280ed
